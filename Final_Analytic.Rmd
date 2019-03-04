@@ -1,0 +1,96 @@
+---
+title: "Computation_Think_Analytic"
+author: "Fabulous Group"
+date: "March 4, 2019"
+output: html_document
+---
+<br> 
+<center><img src="https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/teamPhoto.png" width="1000"></center>
+
+Import dataset:
+```{r import the final dataset}
+link ="https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/Data/DataFinal.csv"
+df=read.csv(link,stringsAsFactors = FALSE)
+```
+
+Check the content:
+```{r}
+str(df)
+```
+
+The price change among 10 years:
+```{r}
+hist(df$price)
+```
+
+Plot the relationship between price and temp, price and rainfall:
+```{r price & temp}
+plot(df$temperature, df$price)
+```
+
+```{r}
+plot(df$rainfall, df$price)
+```
+
+No clear linear relation.
+
+```{r}
+test=lm(price~rainfall+temperature,data=df)
+summary(test)
+```
+
+```{r}
+library(ggplot2)
+library(dotwhisker)
+dwplot(test，dot_args = list(size = 1.2, colour="red")) + 
+    geom_vline(xintercept = 0, 
+               colour = "grey60", 
+               linetype = 2) +
+    scale_colour_grey(start = .1, end = .7)#+theme_bw()
+```
+
+
+
+```{r}
+library(car)
+qqPlot(test, main="QQ Plot")
+```
+
+The error variance changes with the level of the response, which will happen if the output of the ncvTest function is non-significant.
+```{r test homecedastic}
+# homocedastic?
+ncvTest(test)
+```
+
+The predictors are no highly correlated:
+
+```{r test collinearity}
+# collinearity?
+vif(test) > 4 # problem?
+```
+
+Detect the change if influential observations are eliminated:
+
+```{r}
+influencePlot(test, id.method = 'noteworthy', main="Influence Plot", sub="Circle size is proportial to Cook's Distance" )
+```
+
+Those cases (rows) are not considered now:
+
+```{r}
+CountrysOUT=c(62,90,91,116,119)
+newtest = lm(price~temperature+rainfall,
+           data=df[-CountrysOUT,])
+summary(newtest)
+
+```
+
+```{r}
+dwplot(newtest, dot_args = list(size = 1.2, colour="red")) + 
+    geom_vline(xintercept = 0, 
+               colour = "grey60", 
+               linetype = 2) +
+    scale_colour_grey(start = 0.2, end = .7)
+```
+
+
