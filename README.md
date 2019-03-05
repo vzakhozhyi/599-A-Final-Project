@@ -10,9 +10,9 @@
 * Vitalii Zakhozhyi
 
 **Project Summary:**
-The purpose of the Project is to ...
-We used the potato prices data from the World Bank (link) and Peru temperature and railfal data of 2005-2015 (link)... 
 
+The purpose of the Project is to analyse whether changes in average temperature and average level of rainfall affect the change in the average price on potatoes in Peru in 2006-2015 years. We used the potato prices data from the World Bank (https://www.kaggle.com/jboysen/global-food-prices) and data on Peru temperature and railfal of 2005-2015 (http://sdwebx.worldbank.org/climateportal/index.cfm?page=downscaled_data_download&menu=historical)... 
+Our **dependent variable** is a retail price of potato in Peru in 2006-2015. The independent (explanatory) variables we use are monthly average temperature and rainfall in Peru in 2006-2015
 
 **In this repo you can find:**
 * The final [report](https://htmlpreview.github.io/?https://github.com/vzakhozhyi/599-A-Final-Project/blob/master/Final_Analytic.html)
