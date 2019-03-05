@@ -1,8 +1,5 @@
-# 599-A-Final-Project
-Final Project 599 A Class:
-
-
-
+# PUBPOL 599 A Computational Thinking for Governance Analytics - Winter 2019
+# Final Project:
 
 ![Image of Group](https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/teamPhoto.png)
 
@@ -14,7 +11,7 @@ Final Project 599 A Class:
 
 **Project Summary:**
 The purpose of the Project is to ...
-We used the potato prices data from the World Bank (link) and Peru temperature and railfal data of 2005-2015
+We used the potato prices data from the World Bank (link) and Peru temperature and railfal data of 2005-2015 (link)... 
 
 
 **In this repo you can find:**
