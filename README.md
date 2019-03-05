@@ -1,7 +1,12 @@
 # 599-A-Final-Project
 Final Project 599 A Class 
 
-Group：
+Group:
+* Haotian Bu
+* Ian Langer
+* Brady Nordstrom
+* Vitalii Zakhozhyi
+
 ![Image of Group](https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/teamPhoto.png)
 
 In this repo you can find:
