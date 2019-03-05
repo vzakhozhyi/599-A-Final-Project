@@ -1,6 +1,6 @@
 # PUBPOL 599 A Computational Thinking for Governance Analytics - Winter 2019
 
-**Final Project:**
+**Final Project:** Analysis of the impact of average temperature and rainfall changes on the change in the average potato price in Peru in 2006-2015 years
 
 ![Image of Group](https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/teamPhoto.png)
 
