@@ -1,5 +1,6 @@
 # PUBPOL 599 A Computational Thinking for Governance Analytics - Winter 2019
-# Final Project:
+
+**Final Project:**
 
 ![Image of Group](https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/teamPhoto.png)
 
