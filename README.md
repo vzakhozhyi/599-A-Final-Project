@@ -5,10 +5,10 @@
 ![Image of Group](https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/teamPhoto.png)
 
 **Group:**
-* Haotian Bu
-* Ian Langer
-* Brady Nordstrom
 * Vitalii Zakhozhyi
+* Haotian Bu
+* Brady Nordstrom
+* Ian Langer
 
 **Project Summary:**
 
