@@ -1,0 +1,182 @@
+---
+title: "Computation_Think_Analytic"
+author: "Fabulous Group"
+date: "March 4, 2019"
+output: html_document
+---
+<br> 
+<center><img src="https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/teamPhoto.png" width="1000"></center>
+
+## Preparing the Dataset
+
+Import dataset:
+```{r import the final dataset}
+link = "https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/Data%20Final/DataFinal.csv"
+df=read.csv(link,stringsAsFactors = FALSE)
+```
+
+Check the content:
+```{r}
+str(df)
+```
+
+## Check the Dataset
+The price change among 10 years:
+```{r , echo=FALSE}
+hist(df$price)
+```
+
+Plot the relationship between price and temp, price and rainfall:
+```{r price & temp, echo=FALSE}
+plot(df$temperature, df$price)
+```
+
+```{r, echo = FALSE}
+plot(df$rainfall, df$price)
+```
+
+## Regression
+
+We suppose price of patatoes have a linear relationship with rainfall and temperature. Here we use **Linear Regression Model** to test our hypothesis.
+
+```{r linear regression}
+test=lm(price~rainfall+temperature,data=df)
+summary(test)
+```
+The result above supported our hypoethesis: other things equal, rainfall and temperature have siginificant impact on price. On average, one unit increase in rainfall is correlated with 0.00116 sol decrease in price, one degree Celsius increase in temprature is correlated with 0.128 sol increase in price.
+
+Following chart shows coefficients of two explanatory variables.
+
+```{r coefficient plot, echo=FALSE, message=FALSE,warning=FALSE}
+library(ggplot2)
+library(dotwhisker)
+
+dwplot(test，dot_args = list(size = 1.2, colour="red")) + 
+    geom_vline(xintercept = 0, 
+               colour = "grey60", 
+               linetype = 2) +
+    scale_colour_grey(start = .1, end = .7) +
+    labs(title = "Regression coefficients") +
+    labs(caption = "Source: World Bank") + 
+    theme_bw()
+```
+
+
+## Check assumptions of Linear Regression
+
+1. The residuals should seems normally distributed: for that we need to see them along the vertical of the qqplot.
+
+```{r test distribution of residuals, message=FALSE, echo=FALSE, warning=FALSE}
+library(car)
+qqPlot(test, main="QQ Plot") 
+```
+
+
+The error variance changes with the level of the response, which will happen if the output of the ncvTest function is non-significant.
+```{r test homecedastic, echo=FALSE}
+# homocedastic?
+ncvTest(test)
+```
+
+2. The predictors are not highly correlated:
+
+```{r test collinearity}
+# collinearity?
+vif(test) > 4 # problem?
+```
+
+3. Detect the change if influential observations are eliminated:
+
+```{r message=FALSE, echo=FALSE, warning=FALSE}
+influencePlot(test, id.method = 'noteworthy', main="Influence Plot", sub="" )
+```
+
+Those cases (rows) are not considered now:
+
+```{r}
+CountrysOUT=c(62,90,91,116,119)
+newtest = lm(price~temperature+rainfall,
+           data=df[-CountrysOUT,])
+summary(newtest)
+
+```
+
+Compare new regression result with before:
+```{r compare regression, echo=FALSE, warning=FALSE}
+#compare_regression=rbind(test, newtest)
+dwplot(list(test,newtest)) + 
+    geom_vline(xintercept = 0, 
+               colour = "grey60", 
+               linetype = 2) +
+    labs(title = "Comparasion of regression coefficients") +
+    labs(caption = "Source: World Bank") + 
+    theme_bw()
+```
+
+
+```{r setting regression models, echo=FALSE, include = FALSE}
+models <- c( "linear" = "price ~ temperature + rainfall") # Name on left, formula on right
+fitted_lms <- vector("list", length(models)) # initialize list
+
+names(fitted_lms) <- names(models) # give entries good names
+fitted_lms # display the pre-allocated (empty) list
+
+```
+
+
+```{r store regression result in list, echo=FALSE}
+#The formula() function converts a character string describing a model to a formula object readable by lm():
+for(mod in names(models)) {
+    fitted_lms[[mod]] <- lm(formula(models[mod]), data = df)
+}
+
+```
+
+```{r store prediction result in dataframe, echo=FALSE, include=FALSE}
+# initialize data frame to hold predictions
+predicted_data <- df
+for(mod in names(models)) {
+    # make a new column in predicted_data for each model's predictions
+    predicted_data[[mod]] <- predict(fitted_lms[[mod]],
+                                newdata = predicted_data)
+}
+
+head(predicted_data, 10)
+```
+
+
+```{r  message=FALSE, echo=FALSE, warning=FALSE}
+library(tidyr)
+library(dplyr)
+
+tidy_predicted_data <- predicted_data %>%
+    select(3:8) %>% 
+    gather(Model, Prediction, -year, -month, -price, -temperature, -rainfall) %>%
+    mutate(Model = factor(Model, levels = names(models)))
+#tidy_predicted_data[,] # Displaying some rows
+tidy_predicted_data <- tidy_predicted_data %>% mutate(date = paste(year, month, sep="-"))
+tidy_predicted_data$date <- as.Date(paste(tidy_predicted_data$date,"-01",sep=""))
+```
+
+```{r plot the predicted value of linear regression model, echo=FALSE, warning=FALSE}
+ggplot(data = tidy_predicted_data, # Original data!
+       aes(x = date,
+           y = price)) +
+    geom_point() + # Original data as points
+    geom_line(data = tidy_predicted_data, # Predicted data!
+              aes(x = date, 
+                  y = Prediction, 
+                  group = Model, 
+                  color = Model),
+              alpha = 0.5, 
+              size = 2) +
+    labs( y = "price (sol)") +
+    scale_x_date(date_breaks = "6 month") +
+    scale_colour_discrete(name="Regression\nModel") +
+    ggtitle("Predicted trends from regression") +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust=1)) +
+    theme(legend.title = element_text(colour="black", size=10, 
+                                      face="bold"))
+  
+```

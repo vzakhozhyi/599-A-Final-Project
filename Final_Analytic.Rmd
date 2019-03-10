@@ -9,7 +9,7 @@ output: html_document
 
 Import dataset:
 ```{r import the final dataset}
-link ="https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/Data/DataFinal.csv"
+link = "https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/Data%20Final/DataFinal.csv"
 df=read.csv(link,stringsAsFactors = FALSE)
 ```
 
@@ -93,4 +93,104 @@ dwplot(newtest, dot_args = list(size = 1.2, colour="red")) +
     scale_colour_grey(start = 0.2, end = .7)
 ```
 
+
+**Cross Validation Part
+
+```{r setting regression models}
+models <- c("intercept only" = "price ~ 1", # Name on left, formula on right
+            "linear" = "price ~ temperature + rainfall",
+            "quadratic" = "price ~ temperature + rainfall + I(temperature^2) + I(rainfall^2)")
+
+fitted_lms <- vector("list", length(models)) # initialize list
+names(fitted_lms) <- names(models) # give entries good names
+fitted_lms # display the pre-allocated (empty) list
+
+```
+Next, we'll loop over the models vector and fit each one, storing it in the appropriate slot.
+
+The formula() function converts a character string describing a model to a formula object readable by lm():
+
+```{r}
+
+for(mod in names(models)) {
+    fitted_lms[[mod]] <- lm(formula(models[mod]), data = df)
+}
+
+```
+
+```{r}
+# initialize data frame to hold predictions
+predicted_data <- df
+for(mod in names(models)) {
+    # make a new column in predicted_data for each model's predictions
+    predicted_data[[mod]] <- predict(fitted_lms[[mod]],
+                                newdata = predicted_data)
+}
+
+head(predicted_data, 10)
+tail(predicted_data)
+```
+
+
+```{r}
+library(tidyr)
+library(dplyr)
+
+tidy_predicted_data <- predicted_data %>%
+    select(5:10) %>% 
+    gather(Model, Prediction, -price, -temperature, -rainfall) %>%
+    mutate(Model = factor(Model, levels = names(models)))
+tidy_predicted_data[,] # Displaying some rows
+```
+
+#```{r plot the predicted value of different models}
+ggplot(data = df, # Original data!
+       aes(x = ,
+           y = y)) +
+    geom_point() + # Original data as points
+    geom_line(data = tidy_predicted_data, # Predicted data!
+              aes(x = x, 
+                  y = Prediction, 
+                  group = Model, 
+                  color = Model),
+              alpha = 0.5, 
+              size = 2) +
+    ggtitle("Predicted trends from regression") +
+    theme_bw()
+#```
+
+```{r}
+K <- 10
+CV_predictions <- df
+CV_predictions$fold <- sample(rep(1:K, length.out = nrow(CV_predictions)),
+                              replace = FALSE)
+CV_predictions[, names(models)] <- NA
+head(CV_predictions)
+```
+
+```{r cross-validation calculation}
+for(mod in names(models)) {
+    for(k in 1:K) {
+        # TRUE/FALSE vector of rows in the fold
+        fold_rows <- (CV_predictions$fold == k)
+        # fit model to data not in fold
+        temp_mod <- lm(formula(models[mod]),
+                       data = CV_predictions[!fold_rows, ])
+        # predict on data in fold
+        CV_predictions[fold_rows, mod] <- 
+           predict(temp_mod, newdata = CV_predictions[fold_rows, ])
+    }
+}
+```
+
+```{r}
+CV_MSE <- setNames(numeric(length(models)), names(models))
+for(mod in names(models)) {
+    pred_sq_error <- (CV_predictions$price - CV_predictions[[mod]])^2
+    CV_MSE[mod]   <- mean(pred_sq_error)
+}
+CV_MSE
+```
+
+linear regression model has the least mean of standard error.
 
