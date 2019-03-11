@@ -2,17 +2,28 @@
 title: "Computation_Think_Analytic"
 author: "Fabulous Group"
 date: "March 4, 2019"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    theme: united
 ---
 <br> 
 <center><img src="https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/teamPhoto.png" width="1000"></center>
 
-## Preparing the Dataset
+## Importing final dataset
 
-Import dataset:
-```{r import the final dataset}
+In this section we imported the cleaned dataset:
+```{r import the final dataset, warning=FALSE}
 link = "https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/Data%20Final/DataFinal.csv"
 df=read.csv(link,stringsAsFactors = FALSE)
+```
+
+
+```{r, echo=FALSE, warning=FALSE}
+#The date information was stored in seperate variables, let's integrate into one:
+library(dplyr)
+df <- df %>% mutate(date = paste(year, month, sep="-"))
+df$date <- as.Date(paste(df$date,"-01",sep=""))
 ```
 
 Check the content:
@@ -20,19 +31,41 @@ Check the content:
 str(df)
 ```
 
-## Check the Dataset
-The price change among 10 years:
+Distribution of retail price of potato from 2006-2015:
+
 ```{r , echo=FALSE}
-hist(df$price, main="Distribution of potato retail prices in Peru in 2006-2015",
-        xlab="Price",
-        ylab="Frequency",
+plot(df$date, df$price,main="Distribution of potato retail prices in Peru in 2006-2015",
+        xlab="Date",
+        ylab="Price (Sol/5 kg)",
         sub="Source: World Bank",
         cex.sub = 0.75, 
         font.sub = 3)
 ```
 
-Plot the relationship between price and temp, price and rainfall:
-```{r price & temp, echo=FALSE}
+Distribution of temerature in Peru from 2006-2015:
+
+```{r , echo=FALSE}
+plot(df$date, df$temperature,main="Distribution of temperature in Peru in 2006-2015",
+        xlab="Date",
+        ylab="Celsius",
+        sub="Source: World Bank",
+        cex.sub = 0.75, 
+        font.sub = 3)
+```
+
+Distribution of rainfall from 2006-2015:
+
+```{r , echo=FALSE}
+plot(df$date, df$rainfall, main="Distribution of rainfall in Peru in 2006-2015",
+        xlab="Date",
+        ylab="monthly precipitation sums(mm)",
+        sub="Source: World Bank",
+        cex.sub = 0.75, 
+        font.sub = 3)
+```
+
+Plot the correlation between price and temp, price and rainfall:
+```{r price vs. temp, echo=FALSE}
 plot(df$temperature, df$price, main="Correlation between potato price and monthly temperature in Peru",
       xlab="Temperature",
       ylab="Price",
@@ -41,7 +74,7 @@ plot(df$temperature, df$price, main="Correlation between potato price and monthl
       font.sub = 3)
 ```
 
-```{r, echo = FALSE}
+```{r price vs. rainfall, echo = FALSE}
 plot(df$rainfall, df$price, main="Correlation between potato price and monthly rainfall in Peru",
       xlab="Rainfall",
       ylab="Price",
@@ -52,13 +85,13 @@ plot(df$rainfall, df$price, main="Correlation between potato price and monthly r
 
 ## Regression
 
-We suppose price of patatoes have a linear relationship with rainfall and temperature. Here we use **Linear Regression Model** to test our hypothesis.
+We suppose retail price of patato have a linear relationship with rainfall and temperature. Here we use **Linear Regression Model** to test our hypothesis:
 
 ```{r linear regression}
 test=lm(price~rainfall+temperature,data=df)
 summary(test)
 ```
-The result above supported our hypoethesis: other things equal, rainfall and temperature have siginificant impact on price. On average, one unit increase in rainfall is correlated with 0.00116 sol decrease in price, one degree Celsius increase in temprature is correlated with 0.128 sol increase in price.
+The result above supported our hypoethesis: other things equal, rainfall and temperature have siginificant impacts on potato retail price. On average, 1 mm increase in monthly precipitation sums is correlated with 0.00116 Sol decrease in potato price, 1 degree Celsius increase in monthly mean air temprature is correlated with 0.128 Sol increase in potato price.
 
 Following chart shows coefficients of two explanatory variables.
 
@@ -128,61 +161,19 @@ dwplot(list(test,newtest)) +
     theme_bw()
 ```
 
+This plot shows predicted price and actual price:
+```{r prediction vs. actual price, echo=FALSE}
+predicted_data<-df[-CountrysOUT,]
+predicted_data$prediction<- predict(newtest, data = predicted_data)
 
-```{r setting regression models, echo=FALSE, include = FALSE}
-models <- c( "linear" = "price ~ temperature + rainfall") # Name on left, formula on right
-fitted_lms <- vector("list", length(models)) # initialize list
-
-names(fitted_lms) <- names(models) # give entries good names
-fitted_lms # display the pre-allocated (empty) list
-
-```
-
-
-```{r store regression result in list, echo=FALSE}
-#The formula() function converts a character string describing a model to a formula object readable by lm():
-for(mod in names(models)) {
-    fitted_lms[[mod]] <- lm(formula(models[mod]), data = df)
-}
-
-```
-
-```{r store prediction result in dataframe, echo=FALSE, include=FALSE}
-# initialize data frame to hold predictions
-predicted_data <- df
-for(mod in names(models)) {
-    # make a new column in predicted_data for each model's predictions
-    predicted_data[[mod]] <- predict(fitted_lms[[mod]],
-                                newdata = predicted_data)
-}
-
-head(predicted_data, 10)
-```
-
-
-```{r  message=FALSE, echo=FALSE, warning=FALSE}
-library(tidyr)
-library(dplyr)
-
-tidy_predicted_data <- predicted_data %>%
-    select(3:8) %>% 
-    gather(Model, Prediction, -year, -month, -price, -temperature, -rainfall) %>%
-    mutate(Model = factor(Model, levels = names(models)))
-#tidy_predicted_data[,] # Displaying some rows
-tidy_predicted_data <- tidy_predicted_data %>% mutate(date = paste(year, month, sep="-"))
-tidy_predicted_data$date <- as.Date(paste(tidy_predicted_data$date,"-01",sep=""))
-```
-
-```{r plot the predicted value of linear regression model, echo=FALSE, warning=FALSE}
-ggplot(data = tidy_predicted_data, # Original data!
+ggplot(data = predicted_data, # Original data!
        aes(x = date,
            y = price)) +
     geom_point() + # Original data as points
-    geom_line(data = tidy_predicted_data, # Predicted data!
+    geom_line(data = predicted_data, # Predicted data!
               aes(x = date, 
-                  y = Prediction, 
-                  group = Model, 
-                  color = Model),
+                  y = prediction,
+                  colour="red"),
               alpha = 0.5, 
               size = 2) +
     labs( y = "price (sol)") +
@@ -190,8 +181,8 @@ ggplot(data = tidy_predicted_data, # Original data!
     scale_colour_discrete(name="Regression\nModel") +
     ggtitle("Predicted trends from regression") +
     theme_bw() +
-    theme(axis.text.x = element_text(angle = 90, vjust = 1, hjust=1)) +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
     theme(legend.title = element_text(colour="black", size=10, 
                                       face="bold"))
-  
 ```
+
