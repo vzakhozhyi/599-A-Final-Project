@@ -23,16 +23,31 @@ str(df)
 ## Check the Dataset
 The price change among 10 years:
 ```{r , echo=FALSE}
-hist(df$price)
+hist(df$price, main="Distribution of potato retail prices in Peru in 2006-2015",
+        xlab="Price",
+        ylab="Frequency",
+        sub="Source: World Bank",
+        cex.sub = 0.75, 
+        font.sub = 3)
 ```
 
 Plot the relationship between price and temp, price and rainfall:
 ```{r price & temp, echo=FALSE}
-plot(df$temperature, df$price)
+plot(df$temperature, df$price, main="Correlation between potato price and monthly temperature in Peru",
+      xlab="Temperature",
+      ylab="Price",
+      sub="Source: World Bank",
+      cex.sub = 0.75, 
+      font.sub = 3)
 ```
 
 ```{r, echo = FALSE}
-plot(df$rainfall, df$price)
+plot(df$rainfall, df$price, main="Correlation between potato price and monthly rainfall in Peru",
+      xlab="Rainfall",
+      ylab="Price",
+      sub="Source: World Bank",
+      cex.sub = 0.75, 
+      font.sub = 3)
 ```
 
 ## Regression
@@ -51,7 +66,7 @@ Following chart shows coefficients of two explanatory variables.
 library(ggplot2)
 library(dotwhisker)
 
-dwplot(test，dot_args = list(size = 1.2, colour="red")) + 
+dwplot(test, dot_args = list(size = 1.2, colour="red")) + 
     geom_vline(xintercept = 0, 
                colour = "grey60", 
                linetype = 2) +
