@@ -13,7 +13,7 @@ output:
 ## Importing final dataset
 
 In this section we imported the cleaned dataset:
-```{r import the final dataset, warning=FALSE}
+```{r import the final dataset, warning=FALSE, message=FALSE}
 link = "https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/Data%20Final/DataFinal.csv"
 df=read.csv(link,stringsAsFactors = FALSE)
 ```
