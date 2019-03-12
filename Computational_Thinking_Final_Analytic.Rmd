@@ -120,7 +120,7 @@ qqPlot(test, main="QQ Plot")
 ```
 
 
-The error variance changes with the level of the response, which will happen if the output of the ncvTest function is non-significant.
+The error variance changes with the level of the response since the output of the ncvTest function is non-significant.
 ```{r test homecedastic, echo=FALSE}
 # homocedastic?
 ncvTest(test)
