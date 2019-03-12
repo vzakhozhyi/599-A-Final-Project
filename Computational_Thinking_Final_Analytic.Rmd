@@ -112,7 +112,7 @@ dwplot(test, dot_args = list(size = 1.2, colour="red")) +
 
 ## Check assumptions of Linear Regression
 
-1. The residuals should seems normally distributed.
+1. The residuals seems normally distributed.
 
 ```{r test distribution of residuals, message=FALSE, echo=FALSE, warning=FALSE}
 library(car)
