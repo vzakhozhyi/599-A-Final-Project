@@ -60,6 +60,8 @@ ______________
 Data
 </b></p>
 
+Our dependent variable is a retail price of potato in Peru in 2006-2015 (1 unit = 5 kg, in Peruvian Sol). The independent (explanatory) variables we use are near surface monthly mean air temperature (in °C) and monthly precipitation sums (in mm) in Peru in 2006-2015. Except missing data in Mar 2013.
+
 **Importing final dataset**
 
 In this section we imported the cleaned dataset:
@@ -69,7 +71,7 @@ df=read.csv(link,stringsAsFactors = FALSE)
 ```
 
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 #The date information was stored in seperate variables, let's integrate into one:
 library(dplyr)
 df <- df %>% mutate(date = paste(year, month, sep="-"))
@@ -80,6 +82,7 @@ Check the content:
 ```{r}
 str(df)
 ```
+
 
 Distribution of retail price of potato from 2006-2015:
 
@@ -115,6 +118,11 @@ plot(df$date, df$rainfall, main="Distribution of rainfall in Peru in 2006-2015",
 ```
 
 Plot the correlation between price and temp, price and rainfall:
+```{r a better correlation plot}
+pairs(df[,c("price","temperature","rainfall")])
+```
+
+
 ```{r price vs. temp, echo=FALSE}
 plot(df$temperature, df$price, main="Correlation between potato price and monthly temperature in Peru",
       xlab="Temperature",
@@ -141,7 +149,6 @@ We suppose retail price of patato have a linear relationship with rainfall and t
 test=lm(price~rainfall+temperature,data=df)
 summary(test)
 ```
-The result above supported our hypoethesis: other things equal, rainfall and temperature have siginificant impacts on potato retail price. On average, 1 mm increase in monthly precipitation sums is correlated with 0.00116 Sol decrease in potato price, 1 degree Celsius increase in monthly mean air temprature is correlated with 0.128 Sol increase in potato price.
 
 Following chart shows coefficients of two explanatory variables.
 
@@ -156,7 +163,12 @@ dwplot(test, dot_args = list(size = 1.2, colour="red")) +
     scale_colour_grey(start = .1, end = .7) +
     labs(title = "Regression coefficients") +
     labs(caption = "Source: World Bank") + 
-    theme_bw()
+    theme_bw() +
+    theme(axis.text.y = element_text(size=14, angle = 0),
+        axis.text.x = element_text(size=14),
+        plot.title = element_text(size = 14, hjust = 0.5),
+        plot.caption = element_text(hjust = 1, vjust = -1.2, size=14)) 
+  
 ```
 
 
@@ -164,19 +176,19 @@ dwplot(test, dot_args = list(size = 1.2, colour="red")) +
 
 1. The residuals seems normally distributed.
 
-```{r test distribution of residuals, message=FALSE, echo=FALSE, warning=FALSE}
+```{r test whether residuals are normally distributed, message=FALSE, echo=FALSE, warning=FALSE}
 library(car)
 qqPlot(test, main="QQ Plot") 
 ```
 
 
-The error variance changes with the level of the response since the output of the ncvTest function is non-significant.
+The error variance changes with the level of the response since the output of the ncvTest function is non-significant, two outliers are identified:
 ```{r test homecedastic, echo=FALSE}
 # homocedastic?
 ncvTest(test)
 ```
 
-2. The predictors are not highly correlated:
+2. Explanatory variabels are not highly correlated:
 
 ```{r test collinearity}
 # collinearity?
@@ -208,7 +220,13 @@ dwplot(list(test,newtest)) +
                linetype = 2) +
     labs(title = "Comparasion of regression coefficients") +
     labs(caption = "Source: World Bank") + 
-    theme_bw()
+    theme_bw() +
+    theme(axis.text.y = element_text(size=12, angle = 0),
+        axis.text.x = element_text(size=12),
+        plot.title = element_text(size = 14, hjust = 0),
+        plot.caption = element_text(hjust = 1, vjust = -1.2),
+        axis.title.y = element_text(size = 14, hjust = 0, vjust = 1.75),
+        axis.title.x = element_text(size = 14, hjust = 0, vjust = -1.25))
 ```
 
 This plot shows predicted price and actual price:
@@ -227,13 +245,12 @@ ggplot(data = predicted_data, # Original data!
               alpha = 0.5, 
               size = 2) +
     labs( y = "price (sol)") +
-    scale_x_date(date_breaks = "6 month") +
+    scale_x_date(date_breaks = "12 month") +
     scale_colour_discrete(name="Regression\nModel") +
-    ggtitle("Predicted trends from regression") +
+    ggtitle("Predicted price using regression model") +
     theme_bw() +
-    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
-    theme(legend.title = element_text(colour="black", size=10, 
-                                      face="bold"))
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+          legend.title = element_text(colour="black", size=10, face="bold"))
 ```
 
 <br>
@@ -248,7 +265,7 @@ __________
 Research Findings & Conclusion
 </b></p>
 
-Here is our Research findings:
+The regression analysis supported our hypoethesis: other things equal, rainfall and temperature have siginificant impacts on potato retail price. On average, 1 mm increase in monthly precipitation sums is correlated with 0.00116 Sol decrease in potato price, 1 degree Celsius increase in monthly mean air temprature is correlated with 0.128 Sol increase in potato price.
 
 
 <br>
