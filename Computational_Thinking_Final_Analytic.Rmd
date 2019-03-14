@@ -2,18 +2,68 @@
 title: "Computation_Think_Analytic"
 author: "Fabulous Group"
 date: "March 4, 2019"
-output: 
-  html_document:
-    toc: true
-    theme: united
+output: html_document
 ---
 <br> 
 <center><img src="https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/teamPhoto.png" width="1000"></center>
+__________
+<a id='Contents'></a>
 
-## Importing final dataset
+<p style="text-align: left; font-size: 175%;"><b>
+Contents:
+</b></p>
+
+1. [Introduction](#part1) (more justification and arguments)
+
+2. [Research Question](#part2) (clear stated hypothesis, research question, rationale behind it)
+
+3. [Data](#part3)  (add table with descriptive statistics, # of observations, sources, etc)
+
+4. [Research Findings & Conclusion](#part4)
+
+____________
+
+<a id='part1'></a>
+
+<p style="text-align: center; font-size: 175%;"><b>
+Introduction
+</b></p>
+
+
+Peru is the main producer of potatoes in Latin America.
+
+
+<br>
+[Go back to the table of contents](#Contents)
+<br>
+
+____________
+
+<a id='part2></a>
+
+<p style="text-align: center; font-size: 175%;"><b>
+Research Question
+</b></p>
+
+
+Descrobe our research question here.
+
+<br>
+[Go back to the table of contents](#Contents)
+<br>
+
+______________
+
+<a id='part3'></a>
+
+<p style="text-align: center; font-size: 175%;"><b>
+Data
+</b></p>
+
+**Importing final dataset**
 
 In this section we imported the cleaned dataset:
-```{r import the final dataset, warning=FALSE, message=FALSE}
+```{r import the final dataset, results='hide', warning=FALSE, message=FALSE}
 link = "https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/Data%20Final/DataFinal.csv"
 df=read.csv(link,stringsAsFactors = FALSE)
 ```
@@ -83,7 +133,7 @@ plot(df$rainfall, df$price, main="Correlation between potato price and monthly r
       font.sub = 3)
 ```
 
-## Regression
+**Regression**
 
 We suppose retail price of patato have a linear relationship with rainfall and temperature. Here we use **Linear Regression Model** to test our hypothesis:
 
@@ -110,7 +160,7 @@ dwplot(test, dot_args = list(size = 1.2, colour="red")) +
 ```
 
 
-## Check assumptions of Linear Regression
+**Check assumptions of Linear Regression**
 
 1. The residuals seems normally distributed.
 
@@ -185,4 +235,29 @@ ggplot(data = predicted_data, # Original data!
     theme(legend.title = element_text(colour="black", size=10, 
                                       face="bold"))
 ```
+
+<br>
+[Go back to the table of contents](#Contents)
+<br>
+
+__________
+
+<a id='part4'></a>
+
+<p style="text-align: center; font-size: 175%;"><b>
+Research Findings & Conclusion
+</b></p>
+
+Here is our Research findings:
+
+
+<br>
+[Go back to the table of contents](#Contents)
+<br>
+___________
+
+
+
+
+
 
