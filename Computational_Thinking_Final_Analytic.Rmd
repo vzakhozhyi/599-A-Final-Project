@@ -64,9 +64,13 @@ Whether changes in average temperature and average level of rainfall affect the 
 
 **Data**
 
-Our dependent variable is the retail price of potato in Peru in 2006-2015 (in Peruvian Sol per 5kg). 
+For the research, we used data from 2 sources. The data on the retail potato prices are from the World Food Program's Global Food Prices data (https://www.kaggle.com/jboysen/global-food-prices). The dataset contains 743,914 observations on prices obtained in developing world markets for various goods. Data includes information on country, market, price of good in local currency, quantity of good, and month recorded. 
 
-The independent (explanatory) variables we used for the research incluse:
+For the climate data, we used the World Bank's Climate Change Knowledge Portal historical data on monthly average rainfall amount and temperature in Peru from 1991 till 2015, which can be accessed using the link: http://sdwebx.worldbank.org/climateportal/index.cfm?page=downscaled_data_download&menu=historical. Both data sets on rainfall and temperature contain 1800 observations and have year and months indicated. 
+
+Our **dependent variable** is the retail price of potato in Peru in 2006-2015 (in Peruvian Sol per 5kg). 
+
+The **independent (explanatory)** variables we used for the research include:
 *Near surface monthly mean air temperature (in °C). 
 *Monthly precipitation sums (in mm) in Peru in 2006-2015. Except missing data in Mar 2013.
 
