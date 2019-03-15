@@ -1,15 +1,33 @@
-```{r set-options, echo=FALSE, cache=FALSE}
-options(width = 100)
-```
+<style type="text/css">
 
----
-title: "Computation_Think_Analytic"
-author: "Fabulous Group"
-date: "March 4, 2019"
-output: html_document
----
+body, td {
+   font-size: 16px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+</style>
+
+<a id='Top'></a>
+
+<br> 
+<center><img src="http://i.imgur.com/sSaOozN.png" width="500"></center>
+<br>
+
+<p style="text-align: center; font-size: 220%;"><b>
+Analysis of the impact of average temperature and rainfall chages on the change in the average potato price in Peru in 2006-2015 years <br> 
+</b></p>
+
 <br> 
 <center><img src="https://raw.githubusercontent.com/vzakhozhyi/599-A-Final-Project/master/teamPhoto.png" width="1000"></center>
+<br> 
+
+<p style="font-size: 130%;">
+Produced by <b>Fabulous Group</b>: <br> <i>Vitalii Zakhozhyi, Haotian Bu, Brady Nordstrom, Ian Langer</i>
+</p>
 __________
 <a id='Contents'></a>
 
@@ -17,20 +35,18 @@ __________
 Contents:
 </b></p>
 
-1. [Introduction](#part1) (more justification and arguments)
+1. [Introduction & Data Summary](#part1) (more justification and arguments)
 
-2. [Research Question](#part2) (clear stated hypothesis, research question, rationale behind it)
+2. [Analysis](#part2)  (add table with descriptive statistics, # of observations, sources, etc)
 
-3. [Data](#part3)  (add table with descriptive statistics, # of observations, sources, etc)
-
-4. [Research Findings & Conclusion](#part4)
+3. [Research Findings & Conclusion](#part3)
 
 ____________
 
 <a id='part1'></a>
 
 <p style="text-align: center; font-size: 175%;"><b>
-Introduction
+Introduction & Data Summary
 </b></p>
 
 
@@ -43,22 +59,14 @@ Peru is the main producer of potatoes in Latin America.
 
 ____________
 
-<a id='part2></a>
+<a id='part2'></a>
 
 <p style="text-align: center; font-size: 175%;"><b>
-Research Question
+Analysis
 </b></p>
 
 
 Descrobe our research question here.
-
-<br>
-[Go back to the table of contents](#Contents)
-<br>
-
-______________
-
-<a id='part3'></a>
 
 <p style="text-align: center; font-size: 175%;"><b>
 Data
@@ -119,11 +127,6 @@ plot(df$date, df$rainfall, main="Distribution of rainfall in Peru in 2006-2015",
         sub="Source: World Bank",
         cex.sub = 0.75, 
         font.sub = 3)
-```
-
-Plot the correlation between price and temp, price and rainfall:
-```{r a better correlation plot}
-pairs(df[,c("price","temperature","rainfall")])
 ```
 
 
@@ -263,7 +266,7 @@ ggplot(data = predicted_data, # Original data!
 
 __________
 
-<a id='part4'></a>
+<a id='part3'></a>
 
 <p style="text-align: center; font-size: 175%;"><b>
 Research Findings & Conclusion
@@ -273,8 +276,12 @@ The regression analysis supported our hypoethesis: other things equal, rainfall 
 
 
 <br>
+
+[Go back to top of the page](#Top)
+
 [Go back to the table of contents](#Contents)
-<br>
+
+[Go to the Project Repo](https://github.com/vzakhozhyi/599-A-Final-Project)
 ___________
 
 
