@@ -35,9 +35,9 @@ __________
 Contents:
 </b></p>
 
-1. [Introduction & Data Summary](#part1) (more justification and arguments)
+1. [Introduction & Data Summary](#part1) 
 
-2. [Analysis](#part2)  (add table with descriptive statistics, # of observations, sources, etc)
+2. [Analysis](#part2)  
 
 3. [Research Findings & Conclusion](#part3)
 
@@ -49,9 +49,26 @@ ____________
 Introduction & Data Summary
 </b></p>
 
+**Introduction**
 
-Peru is the main producer of potatoes in Latin America.
+Peru is the main producer of potatoes in Latin America. The yield and price of potato are highly relevant with farmers' income. It's important for the government to share production trend information with farmers. To achieve this goal, the government need to identify some factors that influence the price of potato. This report explores the relationship between potato price and temperature and rainfall in Peru. 
+<br>
 
+**Research Question**
+
+The main research question is the following:
+
+<p style="text-align: left; font-size: 130%;"><b>
+Whether changes in average temperature and average level of rainfall affect the change in the average price on potatoes in Peru in 2006-2015 years?
+</b></p>
+
+**Data**
+
+Our dependent variable is the retail price of potato in Peru in 2006-2015 (in Peruvian Sol per 5kg). 
+
+The independent (explanatory) variables we used for the research incluse:
+*Near surface monthly mean air temperature (in °C). 
+*Monthly precipitation sums (in mm) in Peru in 2006-2015. Except missing data in Mar 2013.
 
 <br>
 [Go back to the table of contents](#Contents)
@@ -64,15 +81,6 @@ ____________
 <p style="text-align: center; font-size: 175%;"><b>
 Analysis
 </b></p>
-
-
-Descrobe our research question here.
-
-<p style="text-align: center; font-size: 175%;"><b>
-Data
-</b></p>
-
-Our dependent variable is a retail price of potato in Peru in 2006-2015 (1 unit = 5 kg, in Peruvian Sol). The independent (explanatory) variables we use are near surface monthly mean air temperature (in °C) and monthly precipitation sums (in mm) in Peru in 2006-2015. Except missing data in Mar 2013.
 
 **Importing final dataset**
 
@@ -98,7 +106,7 @@ str(df)
 
 Distribution of retail price of potato from 2006-2015:
 
-```{r , echo=FALSE}
+```{r , echo=FALSE,fig.align='center'}
 plot(df$date, df$price,main="Distribution of potato retail prices in Peru in 2006-2015",
         xlab="Date",
         ylab="Price (Sol/5 kg)",
@@ -109,7 +117,7 @@ plot(df$date, df$price,main="Distribution of potato retail prices in Peru in 200
 
 Distribution of temerature in Peru from 2006-2015:
 
-```{r , echo=FALSE}
+```{r , echo=FALSE,fig.align='center'}
 plot(df$date, df$temperature,main="Distribution of temperature in Peru in 2006-2015",
         xlab="Date",
         ylab="Celsius",
@@ -120,7 +128,7 @@ plot(df$date, df$temperature,main="Distribution of temperature in Peru in 2006-2
 
 Distribution of rainfall from 2006-2015:
 
-```{r , echo=FALSE}
+```{r , echo=FALSE,fig.align='center'}
 plot(df$date, df$rainfall, main="Distribution of rainfall in Peru in 2006-2015",
         xlab="Date",
         ylab="monthly precipitation sums(mm)",
@@ -130,7 +138,7 @@ plot(df$date, df$rainfall, main="Distribution of rainfall in Peru in 2006-2015",
 ```
 
 
-```{r price vs. temp, echo=FALSE}
+```{r price vs. temp, echo=FALSE,fig.align='center'}
 plot(df$temperature, df$price, main="Correlation between potato price and monthly temperature in Peru",
       xlab="Temperature",
       ylab="Price",
@@ -139,7 +147,7 @@ plot(df$temperature, df$price, main="Correlation between potato price and monthl
       font.sub = 3)
 ```
 
-```{r price vs. rainfall, echo = FALSE}
+```{r price vs. rainfall, echo = FALSE,fig.align='center'}
 plot(df$rainfall, df$price, main="Correlation between potato price and monthly rainfall in Peru",
       xlab="Rainfall",
       ylab="Price",
@@ -159,7 +167,7 @@ summary(test)
 
 Following chart shows coefficients of two explanatory variables.
 
-```{r coefficient plot, echo=FALSE, message=FALSE,warning=FALSE}
+```{r coefficient plot, echo=FALSE, message=FALSE,warning=FALSE,fig.align='center'}
 library(ggplot2)
 library(dotwhisker)
 
@@ -183,7 +191,7 @@ dwplot(test, dot_args = list(size = 1.2, colour="red")) +
 
 1. The residuals seems normally distributed.
 
-```{r test whether residuals are normally distributed, message=FALSE, echo=FALSE, warning=FALSE}
+```{r test whether residuals are normally distributed, message=FALSE, echo=FALSE, warning=FALSE,fig.align='center'}
 library(car)
 qqPlot(test, main="QQ Plot") 
 ```
@@ -204,7 +212,7 @@ vif(test) > 4 # problem?
 
 3. Detect the change if influential observations are eliminated:
 
-```{r message=FALSE, echo=FALSE, warning=FALSE}
+```{r message=FALSE, echo=FALSE, warning=FALSE,fig.align='center'}
 influencePlot(test, id.method = 'noteworthy', main="Influence Plot", sub="" )
 ```
 
@@ -219,7 +227,7 @@ summary(newtest)
 ```
 
 Compare new regression result with before:
-```{r compare regression, echo=FALSE, warning=FALSE}
+```{r compare regression, echo=FALSE, warning=FALSE,fig.align='center'}
 #compare_regression=rbind(test, newtest)
 dwplot(list(test,newtest)) + 
     geom_vline(xintercept = 0, 
@@ -237,7 +245,7 @@ dwplot(list(test,newtest)) +
 ```
 
 This plot shows predicted price and actual price:
-```{r prediction vs. actual price, echo=FALSE}
+```{r prediction vs. actual price, echo=FALSE,fig.align='center'}
 predicted_data<-df[-CountrysOUT,]
 predicted_data$prediction<- predict(newtest, data = predicted_data)
 
