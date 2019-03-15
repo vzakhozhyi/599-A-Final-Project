@@ -66,7 +66,7 @@ Whether changes in average temperature and average level of rainfall affect the 
 
 For the research, we used data from 2 sources. The data on the retail potato prices are from the World Food Program's Global Food Prices data (https://www.kaggle.com/jboysen/global-food-prices). The dataset contains 743,914 observations on prices obtained in developing world markets for various goods. Data includes information on country, market, price of good in local currency, quantity of good, and month recorded. 
 
-For the climate data, we used the World Bank's Climate Change Knowledge Portal historical data on monthly average rainfall amount and temperature in Peru from 1991 till 2015, which can be accessed using the link: http://sdwebx.worldbank.org/climateportal/index.cfm?page=downscaled_data_download&menu=historical. Both data sets on rainfall and temperature contain 1800 observations and have year and months indicated. 
+For the climate data, we used the World Bank's Climate Change Knowledge Portal historical data on monthly average rainfall amount and temperature in Peru from 1991 till 2015, which can be accessed using the link: http://sdwebx.worldbank.org/climateportal/index.cfm?page=downscaled_data_download&menu=historical. Both data sets on rainfall and temperature contain 1,800 observations and have year and months indicated. 
 
 Our **dependent variable** is the retail price of potato in Peru in 2006-2015 (in Peruvian Sol per 5kg). 
 
@@ -162,7 +162,7 @@ plot(df$rainfall, df$price, main="Correlation between potato price and monthly r
 
 **Regression**
 
-We suppose retail price of patato have a linear relationship with rainfall and temperature. Here we use **Linear Regression Model** to test our hypothesis:
+We suppose retail price of potato has a linear relationship with rainfall and temperature. Here we use **Linear Regression Model** to test our hypothesis:
 
 ```{r linear regression}
 test=lm(price~rainfall+temperature,data=df)
@@ -193,7 +193,7 @@ dwplot(test, dot_args = list(size = 1.2, colour="red")) +
 
 **Check assumptions of Linear Regression**
 
-1. The residuals seems normally distributed.
+1. The residuals seem to be distributed normally.
 
 ```{r test whether residuals are normally distributed, message=FALSE, echo=FALSE, warning=FALSE,fig.align='center'}
 library(car)
@@ -288,13 +288,14 @@ The regression analysis supported our hypoethesis: other things equal, rainfall 
 
 
 <br>
+___________
 
 [Go back to top of the page](#Top)
 
 [Go back to the table of contents](#Contents)
 
 [Go to the Project Repo](https://github.com/vzakhozhyi/599-A-Final-Project)
-___________
+
 
 
 
