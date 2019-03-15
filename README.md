@@ -19,4 +19,4 @@ Our **dependent variable** is a retail price of potato in Peru in 2006-2015 (1 u
 **In this repo you can find:**
 * The final [report](https://htmlpreview.github.io/?https://github.com/vzakhozhyi/599-A-Final-Project/blob/master/Computational_Thinking_Final_Analytic.html)
 * The folder with all the [original files](https://github.com/vzakhozhyi/599-A-Final-Project/tree/master/Data%20Original).
-* The folder with the [Python code for pre-processing and final preprocessed data](https://github.com/vzakhozhyi/599-A-Final-Project/tree/master/Preprocessing%20and%20final%20data)
+* The folder with the [preprocessing Python code and the final data](https://github.com/vzakhozhyi/599-A-Final-Project/tree/master/Preprocessing%20and%20final%20data)
